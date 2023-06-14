@@ -10,8 +10,7 @@ Recently, I wrote a blog [How to use the Azure OpenAI Embedding model to find th
 
 The service introduced in this article processes the data through the following steps:
 
-/////////// UPDATE IS NEEDED ///////////
-Please obtain the source code of the application from the "[Source Code is Here]()".
+Please obtain the source code of the application from the "[Source Code is Here](https://github.com/yoshioterada/PostgreSQL-Vector-Search-pgvector--for-PDF-file-on-Blob-Storage-english)".
 
 ![Azure-Function-Spring-Embedding-Search](https://live.staticflickr.com/65535/52971732748_1dc14e38f2_b.jpg)
 
