@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-Recently, I wrote a blog [How to use the Azure OpenAI Embedding model to find the most relevant documents](https://dev.to/azure/how-to-use-the-azure-openai-embedding-model-to-find-the-most-relevant-documents-42lo). By utilizing this feature, you can easily locate the most pertinent documents. In this article, we will explain how to automatically convert PDF files to text by uploading them to Azure Blob Storage and perform vector searches using the Azure OpenAI Embedding model.
+Recently, I wrote a blog post [how to use the Azure OpenAI Embedding model to find the most relevant documents](https://dev.to/azure/how-to-use-the-azure-openai-embedding-model-to-find-the-most-relevant-documents-42lo). By utilizing this feature, you can easily locate the most pertinent documents. In this article, we will explain how to automatically convert PDF files to text by uploading them to Azure Blob Storage and perform vector searches using the Azure OpenAI Embedding model.
 
 ***By using this service, you can effortlessly search for any document, be it internal company documents or various academic papers, as long as they are in PDF format. Simply upload the files to Azure Blob Storage, and the system will automatically make them searchable. When you actually perform a search, ChatGPT will summarize and display the relevant sections for you.***
 
@@ -34,9 +34,9 @@ The service introduced in this article utilizes the following Azure services:
 - [Azure PostgreSQL Flexible Server](https://learn.microsoft.com/azure/postgresql/flexible-server/overview)
 - [Apache Apache PDFBox](https://pdfbox.apache.org/)
 
-## 2. Setup Environment 
+## 2. Setup Environment
 
-At the moment, there is no Azure CLI command available for creating an Azure OpenAI instance, so you will need to create one through the Azure Portal. Before proceeding with the steps below, please create an Azure OpenAI instance using the Azure Portal's GUI (as of June 13, 2023).
+Currently, there is no Azure CLI command available for creating an Azure OpenAI instance, so you will need to create one using the Azure Portal. Before proceeding with the steps below, please create an Azure OpenAI instance using the Azure Portal's GUI (as of June 13, 2023).
 
 For other Azure resources, you can easily create them using the following commands:
 
@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS DOCUMENT_SEARCH_VECTOR
 
 ## 3. Running the Application
 
-Once the environment setup is complete, please follow the steps below to run the application:
+Once the environment setup is complete, follow the steps below to run the application:
 
 ### 3.1Running Azure Functions (BlobUploadDetector)
 
@@ -236,7 +236,7 @@ By clicking on the `Failed Registration File List` link, you will see a list of 
 
 ## 4. Points to Note for Application Implementation
 
-### 4.1 Points to Note for the Implementation of Azure Functions (BlobUploadDetector)
+### 4.1 Key Points for Implementing Azure Functions (BlobUploadDetector)
 
 First, we will explain the points to note for the implementation of `BlobUploadDetector`, which is implemented in Azure Functions.
 
@@ -533,11 +533,11 @@ Despite trying various approaches, even implementing with `Native Query` resulte
 
 ## Additional Notes
 
-At this point, there are still some unimplemented features. For example, we have not yet implemented the deletion-related functions (deleting Blob files matching the UUID of failed file registrations, deleting entries in CosmosDB). 
+At this point, there are still some unimplemented features. For example, we have not yet implemented the deletion-related functions (deleting Blob files matching the UUID of failed file registrations, deleting entries in CosmosDB).
 
 ## In Conclusion
 
-To reiterate, by using this service, you can search for any internal documents, various research papers, or any PDF files by simply uploading them to Azure Storage. When you actually perform a search, ChatGPT will summarize and display the relevant sections for you.
+In conclusion, by using this service, you can search for any internal documents, various research papers, or any PDF files by simply uploading them to Azure Storage. When you actually perform a search, ChatGPT will summarize and display the relevant sections for you.
 
 Furthermore, not only PDFs but also Word and Excel files, as well as other text documents, can be handled by utilizing libraries.
 
