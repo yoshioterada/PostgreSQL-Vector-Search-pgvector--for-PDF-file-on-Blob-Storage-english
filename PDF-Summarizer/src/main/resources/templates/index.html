@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"> &nbsp;
+
+<head>
+    <meta charset="UTF-8">
+    <title>In-house Document Summarization Service</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        .input-container {
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+            word-break: normal;
+            width: 100%;
+            background-color: #f1f1f1;
+            border: 1px solid #ced4da;
+            padding: 1rem;
+            border-radius: .25rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            padding: .5rem;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: .25rem;
+            padding: .75rem 1.25rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        let userId;
+        let eventSource;
+
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        window.onload = function () {
+            userId = generateUUID();
+            setupEventSource();
+        };
+
+        function setupEventSource() {
+            eventSource = new EventSource("/openai-gpt4-sse-stream?userId=" + userId);
+
+            eventSource.addEventListener('message', function (event) {
+                var responseContainer = document.getElementById("responseContainer");
+                const data = event.data;
+                if (isJson(data)) {
+                    const json = JSON.parse(data);
+                    if (json.type === "create") {
+                        var documentId = json.id;
+                        // ターゲットの下に child 要素を追加
+                        addArea(documentId);
+                        return;
+                    } else if (json.type === "createLink") {
+                        var documentId = json.id;
+                        var link = json.link;
+                        var fileName = json.fileName;
+                        var pageNumber = json.pageNumber;
+                        // child の下のリンク記載部分にリンクを追加
+                        createLink(documentId, link, fileName, pageNumber);
+                        return;
+                    } else if (json.type === "addMessage") {
+                        var documentId = json.id;
+                        var content = json.content;
+                        // child の下のテキスト記載部分にテキストを追加
+                        addMessage(documentId, content);
+                        return;
+                    }
+                }
+            });
+        }
+
+        function addArea(uuid) {
+            let elements = document.getElementById("target");
+            // ターゲットの下に child 要素を追加
+            var childDiv = document.createElement('div');
+            childDiv.id = 'child_' + uuid;
+            childDiv.index = uuid;
+            childDiv.className = 'child';
+            elements.appendChild(childDiv);
+
+            // child リンク部分作成
+            var anchorLink = document.createElement('div');
+            anchorLink.id = 'anchorLink_' + uuid;
+            anchorLink.className = 'input-container';
+            // テキスト部分作成
+            var resValue = document.createElement('div');
+            resValue.id = 'responseContainer_' + uuid;
+            resValue.className = 'input-container';
+
+            childDiv.appendChild(anchorLink);
+            childDiv.appendChild(resValue);
+        }
+
+        function createLink(uuid, link, fileName, pageNumber) {
+            var element = 'anchorLink_' + uuid;
+
+            var anchorLink = document.getElementById(element);
+            // アンカータグを作成 
+            var anchor = document.createElement("a");
+            anchor.href = link;
+            anchor.textContent = '● ' + fileName + '：(' + pageNumber.toString() + ' ページ目)';
+            anchor.target = '_blank';
+            // リンク要素を追加  
+            anchorLink.appendChild(anchor);
+            // 改行要素を追加  
+            anchorLink.appendChild(document.createElement("br"));
+        }
+
+        function addMessage(uuid, message) {
+            var element = 'responseContainer_' + uuid;
+            var responseContainer = document.getElementById(element);
+            // 空白文字対応
+            const replace1 = message.replace(/<SPECIAL_WHITE_SPACE>/g, " ");
+            const replace2 = replace1.replace(/。/g, "。\n");
+            responseContainer.textContent += replace2;
+        }
+
+        function isJson(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
+        }
+
+        function submitText() {
+            let elements = document.querySelectorAll('#target *');
+            elements.forEach(function (element) {
+                element.remove();
+            });
+            const textFieldValue = document.getElementById("inputText").value;
+            fetch("/openai-gpt4-sse-submit?userId=" + userId, {
+                method: "POST",
+                body: textFieldValue,
+                headers: {
+                    "Content-Type": "text/plain"
+                }
+            });
+        }  
+    </script>
+</head>
+
+<body>
+    <h1>In-house Document Summarization Service</h1>
+    <h3>Enter keywords for the documents you want to search.</h3>
+
+    <div class="container">
+        <div class="input-container"> <textarea type="text" id="inputText"
+                placeholder="Enter your text here..."></textarea> <button onclick="submitText()">Submit</button> </div>
+        <A HREF="/listAllRegisteredContents">Registered File List</A><br />
+        <A HREF="/listAllFailedContents">Failed Registration File List</A><br />
+
+        <div id="target"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "****************************",
+    "AzurePostgresqlJdbcurl": "jdbc:postgresql://documentsearch1.postgres.database.azure.com:5432/VECTOR_DB?sslmode=require",
+    "AzurePostgresqlUser": "azureuser",
+    "AzurePostgresqlPassword": "********",
+    "AzurePostgresqlDbTableName": "DOCUMENT_SEARCH_VECTOR",
+    "AzureBlobstorageName": "documentsearch1",
+    "AzureBlobstorageContainerName": "pdfs",
+    "AzureCosmosDbEndpoint": "https://documentsearchstatus1.documents.azure.com:443/",
+    "AzureCosmosDbKey": "********************",
+    "AzureCosmosDbDatabaseName": "documentregistrystatus",
+    "AzureCosmosDbContainerName": "status",
+    "AzureOpenaiUrl": "https://YOUR_OPENAI.openai.azure.com",
+    "AzureOpenaiModelName": "gpt-4",
+    "AzureOpenaiApiKey": "YOUR_OPENAI_ACCESS_KEY",
+    "FUNCTIONS_WORKER_RUNTIME": "java"
+  }
+}

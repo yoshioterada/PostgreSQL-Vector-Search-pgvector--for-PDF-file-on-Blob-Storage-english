@@ -1,0 +1,26 @@
+{
+    "indexingMode": "consistent",
+    "automatic": true,
+    "includedPaths": [
+        {
+            "path":"/*"
+        }
+    ],
+    "excludedPaths": [
+        {
+            "path": "/\"_etag\"/?"
+        }
+    ],
+    "compositeIndexes":[  
+        [  
+            {  
+                "path":"/fileName",
+                "order":"ascending"
+            },
+            {  
+                "path":"/pageNumber",
+                "order":"ascending"
+            }
+        ]
+    ]    
+}

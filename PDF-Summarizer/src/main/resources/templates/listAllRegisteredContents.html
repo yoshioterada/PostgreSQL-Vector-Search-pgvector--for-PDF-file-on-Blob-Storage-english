@@ -1,0 +1,86 @@
+<!DOCTYPE html>  
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">  
+  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>List All Contents</title>  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">  
+    <style>  
+        body {  
+            font-family: 'Roboto', Arial, sans-serif;  
+            background-color: #f0f0f0;  
+            margin: 0;  
+            padding: 0;  
+        }  
+  
+        .container {  
+            max-width: 1200px;  
+            margin: 50px auto;  
+            background-color: #fff;  
+            padding: 20px;  
+            border-radius: 5px;  
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+        }  
+  
+        h1 {  
+            text-align: center;  
+            color: #333;  
+            font-weight: 500;  
+            font-size: 2.5rem;  
+            margin-bottom: 30px;  
+        }  
+  
+        table {  
+            width: 100%;  
+            border-collapse: collapse;  
+        }  
+  
+        th,  
+        td {  
+            padding: 10px;  
+            border: 1px solid #ccc;  
+            text-align: left;  
+            font-size: 16px;  
+        }  
+  
+        th {  
+            background-color: #f2f2f2;  
+            font-weight: bold;  
+            font-size: 1.1rem;  
+            color: #333;  
+        }  
+  
+        a {  
+            color: #007BFF;  
+            text-decoration: none;  
+        }  
+  
+        a:hover {  
+            text-decoration: underline;  
+        }  
+    </style>  
+</head>  
+  
+<body>  
+    <div class="container">  
+        <h1>List of registered files</h1>  
+        <table>  
+            <thead>  
+                <tr>  
+                    <th>File Name</th>  
+                    <th>Page Number</th>  
+                </tr>  
+            </thead>  
+  
+            <tbody>  
+                <tr th:each="item : ${list}">  
+                    <td th:text="${item.fileName}"></td>  
+                    <td th:text="${item.pageNumber}"></td>
+                </tr>  
+            </tbody>  
+        </table>  
+    </div>  
+</body>  
+  
+</html>  
