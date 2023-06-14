@@ -23,7 +23,7 @@ Please obtain the source code of the application from the "[Source Code is Here]
 7. Based on the vectorized data, similar data is retrieved from Azure PostgreSQL Flexible Server.
 8. The relevant sections of the highly similar result documents are analyzed by Azure OpenAI ChatGPT and returned in a streaming.
 
-### 1.2. Technologies Used利用するテクノロジー
+### 1.2. Technologies Used
 
 The service introduced in this article utilizes the following Azure services:
 
